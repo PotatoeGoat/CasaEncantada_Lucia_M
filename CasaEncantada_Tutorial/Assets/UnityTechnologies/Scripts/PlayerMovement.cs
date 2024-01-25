@@ -4,19 +4,41 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    Vector3 m_Movement;
 
-    
+    Animator m_Animator;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        //accedo al componente Animator para crear la referencia a este componente y que otros métodos puedan acceder a él
+        m_Animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        //movimiento del personaje
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
+
+        //declaro el valor del Vector3 y normalizo la diagonal para que vaya a la misma velocidad en todas las direcciones
+        m_Movement.Set(horizontal, 0f, vertical);
+        m_Movement.Normalize();
+
+        //DETECTAR SI HAY ENTRADAS DEL TECLADO PARA ASÍ SABER SI SE TIENE QUE MOVER O NO EN LA ANIMACIÓN
+
+        //regresa una variable de tipo bool: VERDADERA si los dos parámetros de la función Aproximately (Mathf es la clase) son aproximadamente iguales; o FALSO si no lo son.
+        //En este caso será FALSE si "horizontal" se aproxima a 0 ya que contiene el operador lógico ! (negación) delante de la sentencia, así que devuelve los valores contrarios.
+        bool hasHorizontalInput = !Mathf.Approximately(horizontal, 0f); //si se está pulsando una tecla de input horizontal, entonces el valor se aleja de 0, y es igual a TRUE
+        //hago lo mismo con el eje vertical
+        bool hasVerticalInput = !Mathf.Approximately(vertical, 0f); //si se está pulsando una tecla de input vertical, entonces el valor se aleja de 0, y es igual a TRUE
+
+        //hago que si uno de los dos, o los dos, son TRUE (osea, tienen alguna entrada de input de las teclas), entonces IsWalking también es TRUE
+        bool isWalking = hasHorizontalInput || hasVerticalInput;
+
+        //le asigno el valor que devuelve el bool "isWalking" al parámetro bool que creé en el Animator de unity "IsWalking" que contiene las animaciones del personaje.
+        m_Animator.SetBool("IsWalking", isWalking);
     }
 }
