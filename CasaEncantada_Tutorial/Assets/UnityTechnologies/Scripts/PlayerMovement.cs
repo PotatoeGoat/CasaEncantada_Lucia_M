@@ -12,6 +12,8 @@ public class PlayerMovement : MonoBehaviour
 
     Rigidbody m_Rigidbody;
 
+    AudioSource m_AudioSource;
+
     public float turnSpeed = 20f;
 
     // Start is called before the first frame update
@@ -20,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
         //accedo al componente Animator para crear la referencia a este componente y que otras funciones puedan acceder a él
         m_Animator = GetComponent<Animator>();
         m_Rigidbody = GetComponent<Rigidbody>();
+        m_AudioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -47,6 +50,19 @@ public class PlayerMovement : MonoBehaviour
 
         //le asigno el valor que devuelve el bool "isWalking" al parámetro bool que creé en el Animator de unity "IsWalking" que contiene las animaciones del personaje.
         m_Animator.SetBool("IsWalking", isWalking);
+
+        //audio de los pasos
+        if (isWalking)
+        {
+            if (!m_AudioSource.isPlaying)
+            {
+                m_AudioSource.Play();
+            }
+        }
+        else
+        {
+            m_AudioSource.Stop();
+        }
 
         //ROTAR AL PERSONAJE SEGUN QUE TECLA ESTEMOS PULSANDO
 
