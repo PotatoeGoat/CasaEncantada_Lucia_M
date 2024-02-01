@@ -15,6 +15,14 @@ public class GameEnding : MonoBehaviour
 
     bool m_IsPlayerCaught;
 
+    //1er CAMBIO: hago una referencia para resetear el tiempo en el script del observer
+    public Observer observer;
+
+    //2º CAMBIO: Creo una referencia para el audio
+    public AudioSource alert;
+
+    
+
     float m_Timer;
     bool m_HasAudioPlayed;
 
@@ -27,6 +35,8 @@ public class GameEnding : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+
         if (m_IsPlayerAtExit)
         {
             EndLevel(exitBackgroundImageCanvasGroup, false, exitAudio);
@@ -35,6 +45,7 @@ public class GameEnding : MonoBehaviour
         {
             EndLevel(caughtBackgroundImageCanvasGroup, true, caughtAudio);
         }
+        
     }
 
     void OnTriggerEnter(Collider other)
@@ -48,6 +59,15 @@ public class GameEnding : MonoBehaviour
     public void CaughtPlayer()
     {
         m_IsPlayerCaught = true;
+        observer.timeToBeCaught = 0;
+        
+    }
+
+    public void CaughtAlert()
+    {
+
+        
+        alert.Play();
     }
 
     void EndLevel(CanvasGroup imageCanvasGroup, bool doRestart, AudioSource audioSource)

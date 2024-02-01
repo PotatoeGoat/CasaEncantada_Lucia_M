@@ -70,3 +70,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   gameEnding: {fileID: 0}
+  timeToBeCaught: 0
+  caughtAlert: {fileID: 5054379490510263361, guid: c2ad1980ef2e8439c9933a25abc65c95,
+    type: 3}
