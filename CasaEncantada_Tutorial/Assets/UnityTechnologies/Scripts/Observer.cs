@@ -12,12 +12,17 @@ public class Observer : MonoBehaviour
     //1er CAMBIO: Creo una variable tipo float para hacer un timer que determine si han pasado 2 segundos o no
     public float timeToBeCaught;
 
+    //2º CAMBIO: Creo una referencia para el audio
+    public AudioSource alert;
+    bool activateSoundAlert = false;
+
     //3er CAMBIO: al haber hecho el signo de exclamación con una imagen, necesito referenciarla para poder activarla y desactivarla
     public GameObject caughtAlert;
 
     private void Start()
     {
         caughtAlert.SetActive(false);
+        timeToBeCaught = 0f;
     }
 
     void OnTriggerEnter(Collider other)
@@ -27,6 +32,10 @@ public class Observer : MonoBehaviour
             m_IsPlayerInRange = true;
         }
 
+        if (activateSoundAlert == true)
+        {
+            alert.Play();
+        }
     }
 
     void OnTriggerExit(Collider other)
@@ -35,6 +44,8 @@ public class Observer : MonoBehaviour
         {
             m_IsPlayerInRange = false;
             caughtAlert.SetActive(false);
+            timeToBeCaught = 0f;
+            alert.Stop();
         }
     }
 
@@ -56,7 +67,8 @@ public class Observer : MonoBehaviour
                 {
                     Debug.Log("passed " + timeToBeCaught);
 
-                    gameEnding.CaughtAlert();
+                   
+                    activateSoundAlert = true;
                     caughtAlert.SetActive(true);
 
                     timeToBeCaught += Time.deltaTime;
